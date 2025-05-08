@@ -1,21 +1,17 @@
 module rtmtree::longshot_jackpot {
-    //==============================================================================================
-    // Dependencies
-    //==============================================================================================
-    // use sui::coin;
-    use sui::coin::{Self, Coin};
-    use sui::event;
-    use std::vector;
-    use sui::sui::SUI;
-    use sui::transfer;
-    use sui::tx_context;
-    use sui::url::{Self, Url};
-    use sui::clock::{Self, Clock};
-    use sui::object::{Self, UID, ID};
-    use sui::tx_context::TxContext;
-    use std::string::{Self, String};
-    use sui::balance::{Self, Balance};
-    use sui::vec_map::{Self, VecMap};
+
+    // use sui::coin::{Self, Coin};
+    // use sui::event;
+    // use sui::sui::SUI;
+    // use sui::transfer;
+    // use sui::tx_context;
+    // use sui::url::{Self, Url};
+    // use sui::clock::{Self, Clock};
+    // use sui::object::{Self, UID, ID};
+    // use sui::tx_context::TxContext;
+    // use std::string::{Self, String};
+    // use sui::balance::{Self, Balance};
+    // use sui::vec_map::{Self, VecMap};
 
     #[test_only]
     use sui::test_scenario;
@@ -35,14 +31,14 @@ module rtmtree::longshot_jackpot {
     const ESIGNER_NOT_ADMIN: u64 = 0;
     const EPLAYER_HAS_NOT_JOINED: u64 = 1;
     const EDEADLINE_HAS_PASSED: u64 = 2;
-    const EDEADLINE_HAS_NOT_PASSED: u64 = 3;
+    // const EDEADLINE_HAS_NOT_PASSED: u64 = 3;
     const EINSUFFICIENT_BALANCE: u64 = 4;
 
     //==============================================================================================
     // Module Structs - DO NOT MODIFY
     //==============================================================================================
 
-    struct GameState has key, store {
+    public struct GameState has key, store {
         id: UID,
         // game_owner_cap : ID,
         shoot_deadline_mapper: VecMap<address, u64>,
@@ -61,34 +57,28 @@ module rtmtree::longshot_jackpot {
     //     game: ID,
     // }
 
-    //==============================================================================================
-    // Event structs - DO NOT MODIFY
-    //==============================================================================================
+    
 
-    struct ShootEvent has copy, drop {
+    public struct ShootEvent has copy, drop {
         player: address,
         shoot_deadline: u64,
         timestamp: u64
     }
-    struct GoalShotEvent has copy, drop {
+    public struct GoalShotEvent has copy, drop {
         player: address,
         reward: u64,
         timestamp: u64
     }
-    struct TicketPriceUpdateEvent has copy, drop {
+    public struct TicketPriceUpdateEvent has copy, drop {
         old_ticket_price: u64,
         new_ticket_price: u64,
         timestamp: u64
     }
-    struct GameCreated has copy, drop {
+    public struct GameCreated has copy, drop {
         game_id: ID,
         // game_owner_cap_id: ID,
         game_admin: address
     }
-
-    //==============================================================================================
-    // Functions
-    //==============================================================================================
 
     public entry fun create_game(
         game_admin: address, 
@@ -125,14 +115,6 @@ module rtmtree::longshot_jackpot {
         clock: &Clock,
         player_address: address
     ) {
-
-        // === Uncomment this to let user wait til the deadline pass before reshoot ===
-        // // Check if the player is already joined
-        // if (vec_map::contains_key(&state.shoot_deadline_mapper, &signer::address_of(player))){
-        //     // Assert that the last shoot deadline is passed
-        //     assert!( *vec_map::borrow(&state.shoot_deadline_mapper, &signer::address_of(player)) < timestamp::now_seconds(), EDEADLINE_HAS_NOT_PASSED);
-        // };
-        // ============================================================================
 
         // Transfer ticket price to the resource account
         {
