@@ -25,5 +25,4 @@ Prize Distribution: The jackpot prize pool is distributed to the selected winner
 
 Withdrawal: Winners can claim their rewards directly through the contract with secure transaction handling.
 
-# Contact 
- telegram: [defaimaxi](https://t.me/defai_maxi)
+
